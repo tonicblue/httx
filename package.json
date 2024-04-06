@@ -1,5 +1,5 @@
 {
-  "name": "httx",
+  "name": "httx_",
   "version": "0.0.2",
   "description": "An extremely limited and straightforward File System Routing setup for Express, inspired to work with HTMX <3",
   "main": "build/httx.js",
