@@ -63,6 +63,7 @@ function addRoutesToApp(app) {
     }
 }
 exports.addRoutesToApp = addRoutesToApp;
+// DEV SERVER
 function setupDevServer(port) {
     const app = (0, express_1.default)();
     addRoutesToApp(app);

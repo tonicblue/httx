@@ -1,7 +1,7 @@
 {
   "name": "httx",
-  "version": "0.0.1",
-  "description": "An extremely limited and straightforward File System Routing setup for Express",
+  "version": "0.0.2",
+  "description": "An extremely limited and straightforward File System Routing setup for Express, inspired to work with HTMX <3",
   "main": "build/httx.js",
   "bin": {
     "httx": "build/httx/httx.js"
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "exit 0",
     "postinstall": "tsc",
-    "build": "tsc"
+    "build": "tsc",
+    "dummy": "httx --port 9090 --routes ./site/routes --output site/main.ts && tsc -p tsconfig.site.json && node build/site/main.js"
   },
   "repository": {
     "type": "git",
