@@ -6,27 +6,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const arg_1 = __importDefault(require("arg"));
 const build_site_1 = __importDefault(require("./build-site"));
-const node_child_process_1 = require("node:child_process");
 const args = (0, arg_1.default)({
     '--routes': String,
     '--output': String,
-    '--build-command': String,
     '--port': Number,
+    '--public': String,
     '-r': '--routes',
     '-o': '--outputs'
 }, {
     argv: process.argv.slice(2)
 });
 const options = {
-    routes: args['--routes'] ?? 'site/routes',
-    output: args['--output'] ?? 'site/main.ts',
-    buildCommand: args['--build-command'],
-    port: args['--port']
+    routes: args['--routes'] ?? 'routes',
+    output: args['--output'] ?? 'main.ts',
+    port: args['--port'],
+    public: args['--public'] ?? 'public',
 };
 (0, build_site_1.default)(options);
-if (options.buildCommand || options.port) {
-    (0, node_child_process_1.execSync)(options.buildCommand || 'tsc -p tsconfig.site.json');
-    if (options.port)
-        (0, node_child_process_1.execSync)('node build/site/main.js');
-}
-//# sourceMappingURL=efsr.js.map
+//# sourceMappingURL=httx.js.map

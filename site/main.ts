@@ -2,8 +2,10 @@ import Fs from 'fs';
 import Path from 'path';
 import Express, { type Request, type Response, type RequestHandler, type NextFunction, type Application } from 'express';
 
-import * as __ROUTE_ from './routes';
-import * as __ROUTE__slug_ from './routes/[slug]';
+// ROUTE IMPORTS
+import * as __ROUTE_about_ts from './routes/about';
+import * as __ROUTE_index_ts from './routes/index';
+import * as __ROUTE__slug_index_ts from './routes/index';
 
 export type HandlerThisArg = {
   handler: RequestHandler,
@@ -18,8 +20,10 @@ export type Route = {
 const httpVerbs: HttpVerb[] = ['get', 'post', 'delete', 'put', 'patch', 'options', 'head', 'all'];
 const routes: Route[] = [];
 
-loadRoute('/', __ROUTE_);
-loadRoute('/:slug', __ROUTE__slug_);
+// LOAD ROUTES
+loadRoute('/about', __ROUTE_about_ts);
+loadRoute('/', __ROUTE_index_ts);
+loadRoute('/:slug', __ROUTE__slug_index_ts);
 
 /* @ts-ignore */
 function loadRoute (routePath: string | RegExp, routeHandler: any) {
@@ -44,22 +48,23 @@ export function addRoutesToApp (app: Application) {
   }
 }
 
-function setupDevServer (port: number) {
-  const app = Express();
 
-  addRoutesToApp(app);
-  app.listen(port, () => console.log('Site running on port', port));
+    function setupDevServer (port: number) {
+      const app = Express();
 
-  // Basic public directory file server
-  app.get(/.*/, (req: Express.Request, res: Express.Response) => {
-    const url = new URL(req.url, 'https://' + req.headers.host);
-    const publicPath = Path.join('site', 'public', url.pathname);
+      addRoutesToApp(app);
 
-    if (Fs.existsSync(publicPath)) res.send(Fs.readFileSync(publicPath));
-    else res.status(404).send();
-  });
+      app.listen(port, () => console.log('Site running on port', port));
 
-  return app;
-}
+      // Basic public directory file server
+      app.get(/.*/, (req: Express.Request, res: Express.Response) => {
+        const url = new URL(req.url, 'https://' + req.headers.host);
+        const publicPath = Path.join("public", url.pathname);
 
-setupDevServer(9090);
+        if (Fs.existsSync(publicPath)) res.send(Fs.readFileSync(publicPath));
+        else res.status(404).send();
+      });
+    }
+
+    setupDevServer(9090)
+  

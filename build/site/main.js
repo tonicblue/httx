@@ -30,12 +30,16 @@ exports.addRoutesToApp = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
-const __ROUTE_ = __importStar(require("./routes"));
-const __ROUTE__slug_ = __importStar(require("./routes/[slug]"));
+// ROUTE IMPORTS
+const __ROUTE_about_ts = __importStar(require("./routes/about"));
+const __ROUTE_index_ts = __importStar(require("./routes/index"));
+const __ROUTE__slug_index_ts = __importStar(require("./routes/index"));
 const httpVerbs = ['get', 'post', 'delete', 'put', 'patch', 'options', 'head', 'all'];
 const routes = [];
-loadRoute('/', __ROUTE_);
-loadRoute('/:slug', __ROUTE__slug_);
+// LOAD ROUTES
+loadRoute('/about', __ROUTE_about_ts);
+loadRoute('/', __ROUTE_index_ts);
+loadRoute('/:slug', __ROUTE__slug_index_ts);
 /* @ts-ignore */
 function loadRoute(routePath, routeHandler) {
     for (const verb of httpVerbs)
@@ -66,13 +70,12 @@ function setupDevServer(port) {
     // Basic public directory file server
     app.get(/.*/, (req, res) => {
         const url = new URL(req.url, 'https://' + req.headers.host);
-        const publicPath = path_1.default.join('site', 'public', url.pathname);
+        const publicPath = path_1.default.join("public", url.pathname);
         if (fs_1.default.existsSync(publicPath))
             res.send(fs_1.default.readFileSync(publicPath));
         else
             res.status(404).send();
     });
-    return app;
 }
 setupDevServer(9090);
 //# sourceMappingURL=main.js.map

@@ -6,7 +6,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "declaration": true,
-    "outDir": "build/efsr",
+    "outDir": "build/httx",
     "sourceMap": true,
     "strict": true,
     "lib": ["ESNext"],

@@ -2,6 +2,7 @@ import Fs from 'fs';
 import Path from 'path';
 import Express, { type Request, type Response, type RequestHandler, type NextFunction, type Application } from 'express';
 
+// ROUTE IMPORTS
 /* imports */
 
 export type HandlerThisArg = {
@@ -17,6 +18,7 @@ export type Route = {
 const httpVerbs: HttpVerb[] = ['get', 'post', 'delete', 'put', 'patch', 'options', 'head', 'all'];
 const routes: Route[] = [];
 
+// LOAD ROUTES
 /* routes */
 
 /* @ts-ignore */
@@ -42,22 +44,5 @@ export function addRoutesToApp (app: Application) {
   }
 }
 
-function setupDevServer (port: number) {
-  const app = Express();
-
-  addRoutesToApp(app);
-  app.listen(port, () => console.log('Site running on port', port));
-
-  // Basic public directory file server
-  app.get(/.*/, (req: Express.Request, res: Express.Response) => {
-    const url = new URL(req.url, 'https://' + req.headers.host);
-    const publicPath = Path.join('site', 'public', url.pathname);
-
-    if (Fs.existsSync(publicPath)) res.send(Fs.readFileSync(publicPath));
-    else res.status(404).send();
-  });
-
-  return app;
-}
-
-setupDevServer(9090);
+// DEV SERVER
+/* devServer */
