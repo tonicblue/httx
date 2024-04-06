@@ -4,6 +4,8 @@
 
 ---
 
+** BTW! If it wasn't clear, this is a complete work in progress and isn't exatly functional. It's a small project I'm trying to finish with less than 2 days work so I can get on with my main project. Don't use this, or if you do, expect things to change a bit **
+
 ## Usage
 
 ### Basic usage
@@ -29,14 +31,14 @@ export async function get (req: Request, res: Response) {
 Then run the following:
 
 ```bash
-npx httx --post 27374 && tsc && node main.js
+npx httx --port 27374 && tsc && node main.js
 ```
 
 If you navigate to `http://localhost:27374` you should get a response. If you have a directory called `public` in the root of your project it will be used as a rudimentary static server.
 
 ### Not so basic usage
 
-If you don't want it to create the Express application for you, you can still generate the `main.ts` file which exports a function called `addRoutesToApp(app: Express.Application)` which will take your existing Express app and add your routes for you. This is where in my mind the only draw back to using code generation comes in. You have to have at least generated that `main.ts` once for you to import that `addRoutesToApp()` method but it's a small price to pay
+If you don't want it to create the Express application for you, you can still generate the `main.ts` file which exports a function called `addRoutesToApp(app: Express.Application)` which will take your existing Express app and add your routes for you. This is where in my mind the only draw back to using code generation comes in. You have to have at least generated that `main.ts` once for you to import that `addRoutesToApp()` method but it's a small price to pay.
 
 ### BIG BLEEPING WARNING
 

@@ -4,7 +4,6 @@ import Express, { type Request, type Response, type RequestHandler, type NextFun
 
 // ROUTE IMPORTS
 import * as __ROUTE_about_ts from './routes/about';
-import * as __ROUTE_index_ts from './routes/index';
 import * as __ROUTE__slug_index_ts from './routes/index';
 
 export type HandlerThisArg = {
@@ -22,7 +21,6 @@ const routes: Route[] = [];
 
 // LOAD ROUTES
 loadRoute('/about', __ROUTE_about_ts);
-loadRoute('/', __ROUTE_index_ts);
 loadRoute('/:slug', __ROUTE__slug_index_ts);
 
 /* @ts-ignore */
@@ -49,3 +47,35 @@ export function addRoutesToApp (app: Application) {
 }
 
 // DEV SERVER
+
+    function setupDevServer (port: number, publicDir: string, views: string, viewEngine?: string) {
+      console.log('### Creating development server with the following options', { port, publicDir, views, viewEngine, });
+
+      const app = Express();
+
+      addRoutesToApp(app);
+
+      if (viewEngine) {
+        app.set('view engine', viewEngine);
+        app.set('views', views);
+      }
+
+      app.listen(port, () => console.log('Site running on port', port));
+
+      // Basic public directory file server
+      app.get(/.*/, (req: Express.Request, res: Express.Response) => {
+        const url = new URL(req.url, 'https://' + req.headers.host);
+        const filePath = Path.join(publicDir, url.pathname);
+
+        if (Fs.existsSync(filePath)) res.send(Fs.readFileSync(filePath));
+        else res.status(404).send();
+      });
+    }
+
+    setupDevServer(
+      3000, 
+      "public", 
+      "views", 
+      undefined
+    )
+  

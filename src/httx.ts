@@ -10,6 +10,8 @@ const args = Arg({
   '--output': String,
   '--port': Number,
   '--public': String,
+  '--view-engine': String,
+  '--views': String,
   '-r': '--routes',
   '-o': '--outputs'
 }, {
@@ -21,6 +23,8 @@ const options = {
   output: args['--output'] ?? 'main.ts',
   port: args['--port'],
   public: args['--public'] ?? 'public',
+  viewEngine: args['--view-engine'],
+  views: args['--views'] ?? 'views',
 };
 
 if (!existsSync(options.routes))
