@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import Arg from 'arg';
+import Arg, { flag } from 'arg';
 import buildSite from './build-site';
 import { existsSync, statSync } from 'fs';
 import { resolve } from 'path';
@@ -12,11 +12,17 @@ const args = Arg({
   '--public': String,
   '--view-engine': String,
   '--views': String,
+  '--help': flag,
   '-r': '--routes',
-  '-o': '--outputs'
+  '-o': '--outputs',
+  '-?': '--help',
 }, {
   argv: process.argv.slice(2)
 });
+
+if (args['--help']) {
+  console.log(`Help text`)
+}
 
 const options = {
   routes: args['--routes'] ?? 'routes',
