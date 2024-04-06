@@ -49,23 +49,3 @@ export function addRoutesToApp (app: Application) {
 }
 
 // DEV SERVER
-
-    function setupDevServer (port: number) {
-      const app = Express();
-
-      addRoutesToApp(app);
-
-      app.listen(port, () => console.log('Site running on port', port));
-
-      // Basic public directory file server
-      app.get(/.*/, (req: Express.Request, res: Express.Response) => {
-        const url = new URL(req.url, 'https://' + req.headers.host);
-        const publicPath = Path.join("public", url.pathname);
-
-        if (Fs.existsSync(publicPath)) res.send(Fs.readFileSync(publicPath));
-        else res.status(404).send();
-      });
-    }
-
-    setupDevServer(9090)
-  
