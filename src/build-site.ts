@@ -1,5 +1,6 @@
 import Fs from 'node:fs';
 import Path from 'node:path';
+import Dedent from './dedent';
 
 export type Options = {
   routes: string;
@@ -36,10 +37,10 @@ export default function buildSite (options: Options) {
   // console.log(`### SORTED ROUTESFS ###`);
   // console.log(routesFs);
 
-  for (const { path, name } of routesFs) 
+  for (const { path, name } of routesFs)
     if (Path.extname(name) === '.ts') addRouteTs(Path.join(path, name));
 
-  const devServerTemplate = /*javascript*/`
+  const devServerTemplate = Dedent/*javascript*/`
     function setupDevServer (port: number, publicDir: string, views: string, viewEngine?: string) {
       console.log('### Creating development server with the following options', { port, publicDir, views, viewEngine, });
 
@@ -65,9 +66,9 @@ export default function buildSite (options: Options) {
     }
 
     setupDevServer(
-      ${options.port}, 
-      ${JSON.stringify(options.public)}, 
-      ${JSON.stringify(options.views)}, 
+      ${options.port},
+      ${JSON.stringify(options.public)},
+      ${JSON.stringify(options.views)},
       ${JSON.stringify(options.viewEngine)}
     )
   `;

@@ -4,6 +4,7 @@ import Express, { type Request, type Response, type RequestHandler, type NextFun
 
 // ROUTE IMPORTS
 import * as __ROUTE_about_ts from './routes/about';
+import * as __ROUTE_index_ts from './routes/index';
 import * as __ROUTE__slug_index_ts from './routes/index';
 
 export type HandlerThisArg = {
@@ -21,6 +22,7 @@ const routes: Route[] = [];
 
 // LOAD ROUTES
 loadRoute('/about', __ROUTE_about_ts);
+loadRoute('/', __ROUTE_index_ts);
 loadRoute('/:slug', __ROUTE__slug_index_ts);
 
 /* @ts-ignore */
