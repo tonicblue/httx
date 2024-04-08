@@ -1,6 +1,7 @@
 import Fs from 'node:fs';
 import Path from 'node:path';
-import Dedent from './dedent';
+import devServerRenderer from './templates/dev-server';
+import mainRenderer from './templates/main';
 
 export type Options = {
   routes: string;
@@ -12,13 +13,12 @@ export type Options = {
 };
 
 export default function buildSite (options: Options) {
+  const devServerTs = (options.port ? devServerRenderer(options.port, options.public, options.views, options.viewEngine) : '');
   const importsTs: string[] = [];
   const routesTs: string[] = [];
   const routesPath = options.routes;
   const routesFs = Fs.readdirSync(routesPath, { recursive: true, withFileTypes: true })
     .filter((dirent) => dirent.name && dirent.path && !dirent.isDirectory());
-
-  // TODO: Work out why my dummy index route is being lost
 
   // console.log(`### UNSORTED ROUTESFS ###`);
   // console.log(routesFs);
@@ -40,48 +40,7 @@ export default function buildSite (options: Options) {
   for (const { path, name } of routesFs)
     if (Path.extname(name) === '.ts') addRouteTs(Path.join(path, name));
 
-  const devServerTemplate = Dedent/*javascript*/`
-    function setupDevServer (port: number, publicDir: string, views: string, viewEngine?: string) {
-      console.log('### Creating development server with the following options', { port, publicDir, views, viewEngine, });
-
-      const app = Express();
-
-      addRoutesToApp(app);
-
-      if (viewEngine) {
-        app.set('view engine', viewEngine);
-        app.set('views', views);
-      }
-
-      app.listen(port, () => console.log('Site running on port', port));
-
-      // Basic public directory file server
-      app.get(/.*/, (req: Express.Request, res: Express.Response) => {
-        const url = new URL(req.url, 'https://' + req.headers.host);
-        const filePath = Path.join(publicDir, url.pathname);
-
-        if (Fs.existsSync(filePath)) res.send(Fs.readFileSync(filePath));
-        else res.status(404).send();
-      });
-    }
-
-    setupDevServer(
-      ${options.port},
-      ${JSON.stringify(options.public)},
-      ${JSON.stringify(options.views)},
-      ${JSON.stringify(options.viewEngine)}
-    )
-  `;
-
-  const devServerTs = (options.port ? devServerTemplate : '');
-  const serverTemplatePath = Path.join('src', 'server-template.ts');
-  const serverTemplate = Fs.readFileSync(serverTemplatePath).toString();
-  const generatedCode = (serverTemplate
-    .replace('/* imports */', importsTs.join('\n'))
-    .replace('/* routes */', routesTs.join('\n'))
-    .replace('/* devServer */', devServerTs)
-  );
-
+  const generatedCode = mainRenderer(importsTs.join('\n'), routesTs.join('\n'), devServerTs);
   Fs.writeFileSync(options.output, generatedCode);
 
   return generatedCode;
@@ -96,10 +55,11 @@ export default function buildSite (options: Options) {
         .replace(/index$/, '')
         .replace(/\/$/, '')
     );
-    const importPath = Path.join(routes, Path.basename(relativeRoutePath, '.ts'));
+    const importPath = Path.relative(outputDir, path).replace(/\.ts$/, '');
     const importName = `__ROUTE_${relativeRoutePath.replace(/[^a-z0-9_]/g, '_')}`;
 
     console.log('### ADD ROUTE TS ###', {
+      path,
       outputDir,
       routes,
       relativeRoutePath,

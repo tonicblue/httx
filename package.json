@@ -10,7 +10,7 @@
     "test": "exit 0",
     "postinstall": "tsc",
     "build": "tsc",
-    "dummy": "npx httx --routes ./site/routes --output site/main.ts && tsc -p tsconfig.site.json && node build/site/main.js"
+    "demo": "npx httx --routes demo/routes --output demo/main.ts --public demo/public --port 9000 && tsc -p demo.tsconfig.json && node build/demo/main.js"
   },
   "repository": {
     "type": "git",

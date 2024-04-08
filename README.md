@@ -4,7 +4,7 @@
 
 ---
 
-** BTW! If it wasn't clear, this is a complete work in progress and isn't exatly functional. It's a small project I'm trying to finish with less than 2 days work so I can get on with my main project. Don't use this, or if you do, expect things to change a bit **
+** BTW! If it wasn't clear, this is a complete work in progress and isn't exactly functional. It's a small project I'm trying to finish with less than 2 days work so I can get on with my main project. Don't use this, or if you do, expect things to change a bit **
 
 ## Usage
 
@@ -16,7 +16,7 @@ To get up and running, simply add it as a development dependency using your favo
 npm i --save-dev httx
 pnpm add -D httx
 yarn add -D httx
-bun add -D httx
+bun add -D httx         # May not actually work with bun
 ```
 For fastest results, create a directory called `routes` in the root of your project and stick the following file in it:
 
@@ -24,7 +24,7 @@ For fastest results, create a directory called `routes` in the root of your proj
 import { Request, Response } from 'express';
 
 export async function get (req: Request, res: Response) {
-  res.send(`<h1>HTTX</h1><p>Hopefully just worked!</p>`);
+  res.send(`<h1>httx</h1><p>Hopefully just worked!</p>`);
 }
 ```
 

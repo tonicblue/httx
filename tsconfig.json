@@ -11,7 +11,7 @@
     "strict": true,
     "lib": ["ESNext"],
     "types": ["node"],
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
   "include": ["src"],
