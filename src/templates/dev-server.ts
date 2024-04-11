@@ -173,6 +173,8 @@ function setupDevServer (port: number, publicDir: string, views: string, viewEng
   console.log('### Creating development server with the following options', { port, publicDir, views, viewEngine, });
 
   const app = Express();
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   addRoutesToApp(app);
 
