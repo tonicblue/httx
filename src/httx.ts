@@ -15,6 +15,7 @@ const args = Arg({
   '--view-engine': String,
   '--views': String,
   '--help': Boolean,
+  '--include-import-ext': Boolean,
   '-r': '--routes',
   '-o': '--outputs',
   '-?': '--help',
@@ -61,6 +62,7 @@ const options = {
   public: args['--public'] ?? 'public',
   viewEngine: args['--view-engine'],
   views: args['--views'] ?? 'views',
+  includeImportExt: args['--include-import-ext'] ?? false
 };
 
 if (!existsSync(options.routes))

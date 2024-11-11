@@ -10,6 +10,7 @@ export type Options = {
   viewEngine?: string;
   views: string;
   public: string;
+  includeImportExt: boolean;
 };
 
 export default function buildSite (options: Options) {
@@ -55,7 +56,8 @@ export default function buildSite (options: Options) {
         .replace(/index$/, '')
         .replace(/\/$/, '')
     );
-    const importPath = Path.relative(outputDir, path).replace(/\.ts$/, '');
+    const ext = options.includeImportExt ? '.js' : '';
+    const importPath = Path.relative(outputDir, path).replace(/\.ts$/, '') + ext;
     const importName = `__ROUTE_${relativeRoutePath.replace(/[^a-z0-9_]/g, '_')}`;
 
     console.log('### ADD ROUTE TS ###', {
