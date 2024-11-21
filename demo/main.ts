@@ -2,6 +2,7 @@
 import Fs from 'fs';
 import Path from 'path';
 import Express, { type Request, type Response, type RequestHandler, type NextFunction, type Application } from 'express';
+import Cors from 'cors';
 
 // ROUTE IMPORTS
 import * as __ROUTE_about_ts from './routes/about';
@@ -225,6 +226,9 @@ function setupDevServer (port: number, publicDir: string, views: string, viewEng
   console.log('### Creating development server with the following options', { port, publicDir, views, viewEngine, });
 
   const app = Express();
+  app.use(Cors());
+  app.use(Express.json());
+  app.use(Express.urlencoded({ extended: true }));
 
   addRoutesToApp(app);
 

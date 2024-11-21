@@ -2,6 +2,7 @@ export default (imports: string, routes: string, devServer: string) => /*javascr
 import Fs from 'fs';
 import Path from 'path';
 import Express, { type Request, type Response, type RequestHandler, type NextFunction, type Application } from 'express';
+import Cors from 'cors';
 
 // ROUTE IMPORTS
 ${imports}
