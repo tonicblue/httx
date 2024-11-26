@@ -1,6 +1,6 @@
 {
   "name": "httx_",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "An extremely limited and straightforward File System Routing setup for Express, inspired to work with HTMX <3",
   "main": "build/httx.js",
   "bin": {
@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "exit 0",
-    "postinstall": "tsc",
     "build": "tsc",
     "demo": "npx httx --routes demo/routes --output demo/main.ts --public demo/public --port 9000 && tsc -p demo.tsconfig.json && node build/demo/main.js"
   },
