@@ -25,14 +25,33 @@ export default function buildSite (options: Options) {
   // console.log(routesFs);
 
   // TODO: Implement better sort function to make sure static filenames take precedent over pattern matching file and directory names
+  // routesFs.sort((a: Fs.Dirent, b: Fs.Dirent) => {
+  //   const aPath = Path.join(a.path, a.name);
+  //   const bPath = Path.join(b.path, b.name);
+  //   if (aPath.includes(':'))
+  //     if (bPath.includes(':')) return aPath.localeCompare(bPath);
+  //     else return 1;
+  //   else if (bPath.includes(':')) return -1;
+  //   else return aPath.localeCompare(bPath);
+  // });
+
   routesFs.sort((a: Fs.Dirent, b: Fs.Dirent) => {
-    const aPath = Path.join(a.path, a.name);
-    const bPath = Path.join(b.path, b.name);
-    if (aPath.includes(':'))
-      if (bPath.includes(':')) return aPath.localeCompare(bPath);
-      else return 1;
-    else if (bPath.includes(':')) return -1;
-    else return aPath.localeCompare(bPath);
+  //   const aPath = Path.join(a.path, a.name);
+  //   const bPath = Path.join(b.path, b.name);
+
+    // 1. Count the number of parameters in each path
+    const paramCountA = (a.name.match(/:/g) || []).length;
+    const paramCountB = (b.name.match(/:/g) || []).length;
+
+    // 2. Prioritize paths with fewer parameters
+    if (paramCountA < paramCountB) {
+      return -1;
+    } else if (paramCountA > paramCountB) {
+      return 1;
+    }
+
+    // 3. If the number of parameters is the same, maintain original order
+    return 0;
   });
 
   // console.log(`### SORTED ROUTESFS ###`);

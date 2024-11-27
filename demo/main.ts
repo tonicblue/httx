@@ -7,6 +7,7 @@ import Cors from 'cors';
 // ROUTE IMPORTS
 import * as __ROUTE_about_ts from './routes/about';
 import * as __ROUTE_index_ts from './routes/index';
+import * as __ROUTE_slug_demo_override_ts from './routes/slug-demo/override';
 import * as __ROUTE_slug_demo__slug_index_ts from './routes/slug-demo/:slug/index';
 
 export type HandlerThisArg = {
@@ -26,6 +27,7 @@ const routes: Route[] = [];
 // LOAD ROUTES
 loadRoute('/about', __ROUTE_about_ts);
 loadRoute('/', __ROUTE_index_ts);
+loadRoute('/slug-demo/override', __ROUTE_slug_demo_override_ts);
 loadRoute('/slug-demo/:slug', __ROUTE_slug_demo__slug_index_ts);
 
 /* @ts-ignore */
