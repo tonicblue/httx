@@ -36,22 +36,9 @@ export default function buildSite (options: Options) {
   // });
 
   routesFs.sort((a: Fs.Dirent, b: Fs.Dirent) => {
-  //   const aPath = Path.join(a.path, a.name);
-  //   const bPath = Path.join(b.path, b.name);
-
-    // 1. Count the number of parameters in each path
-    const paramCountA = (a.name.match(/:/g) || []).length;
-    const paramCountB = (b.name.match(/:/g) || []).length;
-
-    // 2. Prioritize paths with fewer parameters
-    if (paramCountA < paramCountB) {
-      return -1;
-    } else if (paramCountA > paramCountB) {
-      return 1;
-    }
-
-    // 3. If the number of parameters is the same, maintain original order
-    return 0;
+    const aPath = Path.join(a.path, a.name).replace(/:/g, 'µ');
+    const bPath = Path.join(b.path, b.name).replace(/:/g, 'µ');
+    return aPath.localeCompare(bPath);
   });
 
   // console.log(`### SORTED ROUTESFS ###`);
