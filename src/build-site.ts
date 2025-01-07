@@ -17,7 +17,12 @@ export type Options = {
 
 export default function buildSite (options: Options) {
   const serverOptions = options.key && options.cert
-    ? { key: Fs.readFileSync(options.key), cert: Fs.readFileSync(options.cert) }
+    ? {
+        key: Fs.readFileSync(options.key),
+        cert: Fs.readFileSync(options.cert),
+        requestCert: false,
+        rejectUnauthorized: false
+      }
     : undefined;
   const devServerTs = (options.port ? devServerRenderer(options.port, options.public, options.views, options.viewEngine, serverOptions) : '');
   const importsTs: string[] = [];
