@@ -18,8 +18,8 @@ export type Options = {
 export default function buildSite (options: Options) {
   const serverOptions = options.key && options.cert
     ? {
-        key: Fs.readFileSync(options.key),
-        cert: Fs.readFileSync(options.cert),
+        key: options.key,
+        cert: options.cert,
         requestCert: false,
         rejectUnauthorized: false
       }
