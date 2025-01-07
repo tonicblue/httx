@@ -16,6 +16,8 @@ const args = Arg({
   '--views': String,
   '--help': Boolean,
   '--include-import-ext': Boolean,
+  '--cert': String,
+  '--key': String,
   '-r': '--routes',
   '-o': '--outputs',
   '-?': '--help',
@@ -40,6 +42,9 @@ if (args['--help']) {
                     ${_.FG_BLUE}(default: ./public)${_.RESET}
     ${_.BRIGHT}--view-engine${_.RESET}   optionally set the view engine you want the Express dev server to use
     ${_.BRIGHT}--views${_.RESET}         set the views directory to use for the view engine ${_.FG_BLUE}(default: ./views)${_.RESET}
+    ${_.BRIGHT}--include-import-ext${_.RESET} when set the generated import statements will include the .js extension
+    ${_.BRIGHT}--cert${_.RESET}           path to your SSL certificate file when using the dev server
+    ${_.BRIGHT}--key${_.RESET}            path to your SSL key file when using the dev server
     ${_.BRIGHT}--help, -?${_.RESET}      displays this message
 
     ${_.UNDERSCORE + _.BRIGHT}Basic usage:${_.RESET}
@@ -62,7 +67,9 @@ const options = {
   public: args['--public'] ?? 'public',
   viewEngine: args['--view-engine'],
   views: args['--views'] ?? 'views',
-  includeImportExt: args['--include-import-ext'] ?? false
+  includeImportExt: args['--include-import-ext'] ?? false,
+  cert: args['--cert'],
+  key: args['--key'],
 };
 
 if (!existsSync(options.routes))

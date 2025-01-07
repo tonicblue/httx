@@ -1,6 +1,8 @@
 
 import Fs from 'fs';
 import Path from 'path';
+import Https from 'https';
+import Http from 'http';
 import Express, { type Request, type Response, type RequestHandler, type NextFunction, type Application } from 'express';
 import Cors from 'cors';
 
@@ -224,7 +226,20 @@ const mimeTypes: any = {
   '.zip': 'application/zip',
 };
 
-function setupDevServer (port: number, publicDir: string, views: string, viewEngine?: string) {
+function createServer (app: Express.Application, options?: Https.ServerOptions) {
+  if (!options || !('key' in options && 'cert' in options))
+    return Http.createServer(app);
+
+  if ('key' in options)
+    options.key = Fs.readFileSync(options.key as string);
+
+  if ('cert' in options)
+    options.cert = Fs.readFileSync(options.cert as string);
+
+  return Https.createServer(options, app);
+}
+
+function setupDevServer (port: number, publicDir: string, views: string, viewEngine?: string, options?: Https.ServerOptions) {
   console.log('### Creating development server with the following options', { port, publicDir, views, viewEngine, });
 
   const app = Express();
@@ -239,7 +254,9 @@ function setupDevServer (port: number, publicDir: string, views: string, viewEng
     app.set('views', views);
   }
 
-  app.listen(port, () => console.log('Site running on port', port));
+  const server = createServer(app, options).listen(port, () => {
+    console.log('Site running on port', port);
+  });
 
   // Basic public directory file server
   app.get(/.*/, (req: Express.Request, res: Express.Response) => {
@@ -259,6 +276,7 @@ setupDevServer(
   9000,
   "demo/public",
   "views",
+  undefined,
   undefined
 )
 

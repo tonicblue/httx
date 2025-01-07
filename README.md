@@ -13,10 +13,10 @@
 To get up and running, simply add it as a development dependency using your favourite NPM-alike:
 
 ```bash
-npm i --save-dev httx
-pnpm add -D httx
-yarn add -D httx
-bun add -D httx         # May not actually work with bun
+npm i --save-dev httx_
+pnpm add -D httx_
+yarn add -D httx_
+bun add -D httx_         # May not actually work with bun
 ```
 For fastest results, create a directory called `routes` in the root of your project and stick the following file in it:
 
