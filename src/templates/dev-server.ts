@@ -180,12 +180,6 @@ function createServer (app: Express.Application, options?: Https.ServerOptions) 
   if (!options || !('key' in options && 'cert' in options))
     return Http.createServer(app);
 
-  if ('key' in options)
-    options.key = Fs.readFileSync(options.key as string);
-
-  if ('cert' in options)
-    options.cert = Fs.readFileSync(options.cert as string);
-
   return Https.createServer(options, app);
 }
 

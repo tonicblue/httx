@@ -11,10 +11,15 @@ export type Options = {
   views: string;
   public: string;
   includeImportExt: boolean;
+  key?: string;
+  cert?: string;
 };
 
 export default function buildSite (options: Options) {
-  const devServerTs = (options.port ? devServerRenderer(options.port, options.public, options.views, options.viewEngine) : '');
+  const serverOptions = options.key && options.cert
+    ? { key: Fs.readFileSync(options.key), cert: Fs.readFileSync(options.cert) }
+    : undefined;
+  const devServerTs = (options.port ? devServerRenderer(options.port, options.public, options.views, options.viewEngine, serverOptions) : '');
   const importsTs: string[] = [];
   const routesTs: string[] = [];
   const routesPath = options.routes;
