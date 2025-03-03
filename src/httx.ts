@@ -2,7 +2,7 @@
 
 import Arg, { flag } from 'arg';
 import buildSite from './build-site';
-import { existsSync, statSync } from 'fs';
+import { existsSync, mkdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 import dedent from './dedent';
 import * as _ from './colours';
@@ -18,11 +18,14 @@ const args = Arg({
   '--include-import-ext': Boolean,
   '--cert': String,
   '--key': String,
+  '--force': String,
   '-r': '--routes',
   '-o': '--outputs',
+  '-f': '--force',
   '-?': '--help',
 }, {
-  argv: process.argv.slice(2)
+  argv: process.argv.slice(2),
+  permissive: true
 });
 
 if (args['--help']) {
@@ -45,6 +48,7 @@ if (args['--help']) {
     ${_.BRIGHT}--include-import-ext${_.RESET} when set the generated import statements will include the .js extension
     ${_.BRIGHT}--cert${_.RESET}           path to your SSL certificate file when using the dev server
     ${_.BRIGHT}--key${_.RESET}            path to your SSL key file when using the dev server
+    ${_.BRIGHT}--force, -f${_.RESET}      create directories if they don't exist
     ${_.BRIGHT}--help, -?${_.RESET}      displays this message
 
     ${_.UNDERSCORE + _.BRIGHT}Basic usage:${_.RESET}
@@ -70,10 +74,14 @@ const options = {
   includeImportExt: args['--include-import-ext'] ?? false,
   cert: args['--cert'],
   key: args['--key'],
+  force: args['--force'] ?? false,
 };
 
 if (!existsSync(options.routes))
-  throw Error (`Routes directory does not exist: ${resolve(options.routes)}`);
+  if (options.force)
+    mkdirSync(options.routes);
+  else
+    throw Error (`Routes directory does not exist: ${resolve(options.routes)}`);
 
 if (!statSync(options.routes).isDirectory())
   throw new Error(`Provided routes path is not a directory: ${resolve(options.routes)}`);

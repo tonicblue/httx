@@ -10,7 +10,7 @@ import Cors from 'cors';
 import * as __ROUTE_about_ts from './routes/about';
 import * as __ROUTE_index_ts from './routes/index';
 import * as __ROUTE_slug_demo_override_ts from './routes/slug-demo/override';
-import * as __ROUTE_slug_demo__slug_index_ts from './routes/slug-demo/:slug/index';
+import * as __ROUTE_slug_demo__alug_index_ts from './routes/slug-demo/:alug/index';
 
 export type HandlerThisArg = {
   handler: RequestHandler,
@@ -30,7 +30,7 @@ const routes: Route[] = [];
 loadRoute('/about', __ROUTE_about_ts);
 loadRoute('/', __ROUTE_index_ts);
 loadRoute('/slug-demo/override', __ROUTE_slug_demo_override_ts);
-loadRoute('/slug-demo/:slug', __ROUTE_slug_demo__slug_index_ts);
+loadRoute('/slug-demo/:alug', __ROUTE_slug_demo__alug_index_ts);
 
 /* @ts-ignore */
 function loadRoute (routePath: string | RegExp, routeHandler: any) {
@@ -229,6 +229,12 @@ const mimeTypes: any = {
 function createServer (app: Express.Application, options?: Https.ServerOptions) {
   if (!options || !('key' in options && 'cert' in options))
     return Http.createServer(app);
+
+  if ('key' in options)
+    options.key = Fs.readFileSync(options.key as string);
+
+  if ('cert' in options)
+    options.cert = Fs.readFileSync(options.cert as string);
 
   return Https.createServer(options, app);
 }

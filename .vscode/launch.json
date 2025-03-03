@@ -1,0 +1,41 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Build",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/src/httx.ts",
+      "preLaunchTask": "build",
+      "args": [
+        "--output=demo/main.ts",
+        "--public=demo/public",
+        "--routes=demo/routes",
+        "--port=9000",
+        "--force=true"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/build/httx/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/src/build-site.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/build/httx/**/*.js"
+      ]
+    }
+  ]
+}

@@ -9,7 +9,8 @@
   "scripts": {
     "test": "exit 0",
     "build": "tsc",
-    "demo": "npx httx --routes demo/routes --output demo/main.ts --public demo/public --port 9000 && tsc -p demo.tsconfig.json && node build/demo/main.js"
+    "demo": "npx httx --routes demo/routes --output demo/main.ts --public demo/public --port 9000 && tsc -p demo.tsconfig.json && node build/demo/main.js",
+    "publish": "npm run build && npm version patch && npm publish"
   },
   "repository": {
     "type": "git",

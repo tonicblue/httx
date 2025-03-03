@@ -15,6 +15,13 @@ export type Options = {
   cert?: string;
 };
 
+function comparablePath (dirent: Fs.Dirent) {
+  return Path
+    .join(dirent.path, dirent.name)
+    .replace(/:/g, 'µ')
+    .replace(/([^\/]+?)\//g, 'µ$1/');
+}
+
 export default function buildSite (options: Options) {
   const serverOptions = options.key && options.cert
     ? {
@@ -31,28 +38,18 @@ export default function buildSite (options: Options) {
   const routesFs = Fs.readdirSync(routesPath, { recursive: true, withFileTypes: true })
     .filter((dirent) => dirent.name && dirent.path && !dirent.isDirectory());
 
-  // console.log(`### UNSORTED ROUTESFS ###`);
-  // console.log(routesFs);
-
-  // TODO: Implement better sort function to make sure static filenames take precedent over pattern matching file and directory names
-  // routesFs.sort((a: Fs.Dirent, b: Fs.Dirent) => {
-  //   const aPath = Path.join(a.path, a.name);
-  //   const bPath = Path.join(b.path, b.name);
-  //   if (aPath.includes(':'))
-  //     if (bPath.includes(':')) return aPath.localeCompare(bPath);
-  //     else return 1;
-  //   else if (bPath.includes(':')) return -1;
-  //   else return aPath.localeCompare(bPath);
-  // });
+  console.log(`### UNSORTED ROUTESFS ###`);
+  console.log('\t' + routesFs.map(dirent => Path.join(dirent.path, dirent.name)).join('\n\t'));
 
   routesFs.sort((a: Fs.Dirent, b: Fs.Dirent) => {
-    const aPath = Path.join(a.path, a.name).replace(/:/g, 'µ');
-    const bPath = Path.join(b.path, b.name).replace(/:/g, 'µ');
+    const aPath = comparablePath(a);
+    const bPath = comparablePath(b);
+
     return aPath.localeCompare(bPath);
   });
 
-  // console.log(`### SORTED ROUTESFS ###`);
-  // console.log(routesFs);
+  console.log(`### SORTED ROUTESFS ###`);
+  console.log('\t' + routesFs.map(dirent => Path.join(dirent.path, dirent.name)).join('\n\t'));
 
   for (const { path, name } of routesFs)
     if (Path.extname(name) === '.ts') addRouteTs(Path.join(path, name));
