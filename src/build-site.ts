@@ -17,7 +17,7 @@ export type Options = {
 
 function comparablePath (dirent: Fs.Dirent) {
   return Path
-    .join(dirent.path, dirent.name)
+    .join(dirent.parentPath, dirent.name)
     .replace(/:/g, 'µ')
     .replace(/([^\/]+?)\//g, 'µ$1/');
 }
@@ -36,10 +36,10 @@ export default function buildSite (options: Options) {
   const routesTs: string[] = [];
   const routesPath = options.routes;
   const routesFs = Fs.readdirSync(routesPath, { recursive: true, withFileTypes: true })
-    .filter((dirent) => dirent.name && dirent.path && !dirent.isDirectory());
+    .filter((dirent) => dirent.name && dirent.parentPath && !dirent.isDirectory());
 
   console.log(`### UNSORTED ROUTESFS ###`);
-  console.log('\t' + routesFs.map(dirent => Path.join(dirent.path, dirent.name)).join('\n\t'));
+  console.log('\t' + routesFs.map(dirent => Path.join(dirent.parentPath, dirent.name)).join('\n\t'));
 
   routesFs.sort((a: Fs.Dirent, b: Fs.Dirent) => {
     const aPath = comparablePath(a);
@@ -49,7 +49,7 @@ export default function buildSite (options: Options) {
   });
 
   console.log(`### SORTED ROUTESFS ###`);
-  console.log('\t' + routesFs.map(dirent => Path.join(dirent.path, dirent.name)).join('\n\t'));
+  console.log('\t' + routesFs.map(dirent => Path.join(dirent.parentPath, dirent.name)).join('\n\t'));
 
   for (const { path, name } of routesFs)
     if (Path.extname(name) === '.ts') addRouteTs(Path.join(path, name));
