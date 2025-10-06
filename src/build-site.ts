@@ -51,8 +51,8 @@ export default function buildSite (options: Options) {
   console.log(`### SORTED ROUTESFS ###`);
   console.log('\t' + routesFs.map(dirent => Path.join(dirent.parentPath, dirent.name)).join('\n\t'));
 
-  for (const { path, name } of routesFs)
-    if (Path.extname(name) === '.ts') addRouteTs(Path.join(path, name));
+  for (const { parentPath, name } of routesFs)
+    if (Path.extname(name) === '.ts') addRouteTs(Path.join(parentPath, name));
 
   const generatedCode = mainRenderer(importsTs.join('\n'), routesTs.join('\n'), devServerTs);
   Fs.writeFileSync(options.output, generatedCode);

@@ -10,7 +10,7 @@ import Cors from 'cors';
 import * as __ROUTE_about_ts from './routes/about';
 import * as __ROUTE_index_ts from './routes/index';
 import * as __ROUTE_slug_demo_override_ts from './routes/slug-demo/override';
-import * as __ROUTE_slug_demo__alug_index_ts from './routes/slug-demo/:alug/index';
+import * as __ROUTE_slug_demo__slug_index_ts from './routes/slug-demo/:slug/index';
 
 export type HandlerThisArg = {
   handler: RequestHandler,
@@ -30,7 +30,7 @@ const routes: Route[] = [];
 loadRoute('/about', __ROUTE_about_ts);
 loadRoute('/', __ROUTE_index_ts);
 loadRoute('/slug-demo/override', __ROUTE_slug_demo_override_ts);
-loadRoute('/slug-demo/:alug', __ROUTE_slug_demo__alug_index_ts);
+loadRoute('/slug-demo/:slug', __ROUTE_slug_demo__slug_index_ts);
 
 /* @ts-ignore */
 function loadRoute (routePath: string | RegExp, routeHandler: any) {

@@ -6,6 +6,9 @@
   "bin": {
     "httx": "build/httx/httx.js"
   },
+  "engines": {
+    "node": "^22"
+  },
   "scripts": {
     "test": "exit 0",
     "build": "tsc",
