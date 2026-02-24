@@ -34,8 +34,14 @@ function loadRoute (routePath: string | RegExp, routeHandler: any) {
 
 async function middleware (this: HandlerThisArg, req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
+    if (process.env.HTTX_DEBUG)
+      console.log('Request: ' + req.method + ' ' + req.url);
+
     await this.handler(req, res, next);
   } catch (err: any) {
+    if (process.env.HTTX_DEBUG)
+      console.error(JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
+
     res
       .status(err?.status ?? 500)
       .send(err?.message ?? 'Something bad happened');
